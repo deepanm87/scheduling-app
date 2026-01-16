@@ -130,7 +130,7 @@ export const HOST_BY_SLUG_WITH_TOKENS_QUERY = defineQuery(`*[
   }
 }`)
 
-export const USER_CONNECTED_ACCOUNTS_DISPLAY_Query = defineQuery(`*[
+export const USER_CONNECTED_ACCOUNTS_DISPLAY_QUERY = defineQuery(`*[
   _type == "user"
   && clerkId == $clerkId
 ][0]{
