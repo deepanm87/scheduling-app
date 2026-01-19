@@ -126,3 +126,96 @@
 button {
   cursor: pointer;
 }
+
+.rbc-calendar {
+  font-family: inherit;
+}
+
+.rbc-event {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 4px;
+}
+
+.rbc-timeslot-group {
+  min-height: 80px;
+}
+
+.rbc-time-slot {
+  min-height: 20px;
+}
+
+.rbc-allday-cell {
+  display: none;
+}
+
+.rbc-time-view .rbc-row.rbc-time-header-cell .rcb-header,
+.rbc-time-view .rbc-header {
+  border-bottom: 1px solid var(--border) !important;
+  padding: 16px 8px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 640px) {
+  .rbc-timeslot-group {
+    min-height: 60px;
+  }
+
+  .rbc-time-slot {
+    min-height: 15px;
+  }
+
+  .rbc-time-gutter,
+  .rbc-time-header-gutter {
+    min-width: 50px !important;
+    max-width: 50px !important;
+    flex: 0 0 50px !important;
+  }
+
+  .rbc-time-gutter .rbc-label {
+    font-size: 0.65rem;
+    padding: 0 4px;
+  }
+
+  .rbc-time-view .rbc-header {
+    font-size: 0.7rem !important;
+    padding: 8px 2px !important;
+  }
+
+  .rbc-event {
+    font-size: 0.65rem;
+    padding: 1px 3px;
+  }
+
+  .rbc-event-label {
+    font-size: 0.6rem;
+  }
+
+  .rbc-month-view .rbc-date-cell {
+    font-size: 0.75rem;
+    padding: 2px;
+  }
+
+  .rbc-month-row {
+    min-height: 60px;
+  }
+
+  .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor {
+    height: 12px;
+  }
+
+  .rbc-show-more {
+    font-size: 0.65rem;
+  }
+
+  .cl-pricingTableCardPeriodToggle label,
+  .cl-pricingTableCardPeriodToggle span {
+    color: white;
+  }
+
+  div[role="dialog"],
+  div[role="alertdialog"] {
+    z-index: 99999;
+  }
+}
