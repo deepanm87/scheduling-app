@@ -1,0 +1,100 @@
+"use calendar"
+
+import type { ToolbarProps, View } from "react-big-calendar"
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { CopyDayPopover } from "./copy-day-popover"
+import type { TimeBlock } from "../types"
+
+interface CustomToolbarProps {
+  onCopyDayToWeek?: (dayIndex: number, includeWeekends: boolean) => void
+  onClearkWeek?: () => void
+  showCopyButton?: boolean
+}
+
+type CalendarToolbarProps = ToolbarProps<TimeBlock, object> & 
+  CustomToolbarProps
+
+export function CalendarToolbar({
+  label,
+  onNavigate,
+  onView,
+  view,
+  views,
+  onCopyDayToWeek,
+  onClearWeek,
+  showCopyButton = false
+}: CalendarToolbarProps) {
+  const viewOptions = Array.isArray(views) ? views : []
+
+  const handleClearWeek = () => {
+    if (window.confirm("Are you sure you want to clear all events this week?")) {
+      onClearWeek?.()
+    }
+  }
+
+  return (
+    <div className="mb-4 flex items-center justify-between gap-2">
+      <div className="flex gap-1">
+        {viewOptions.map(v => (
+          <Button
+            key={v}
+            variant={view === v ? "default" : "outline"}
+            size="sm"
+            onClick={() => onView(v as View)}
+            className="max-sm:h-8 max-sm:w-8 max-sm:p-0"
+          >
+            <span className="hidden sm:inline">
+              {v.charAt(0).toUpperCase() + v.slice(1)}
+            </span>
+            <span className="hidden sm:inline">
+              {v.charAt(0).toUpperCase() + v.slice(1)}
+            </span>
+            <span className="sm:hidden">{v.charAt(0).toUpperCase()}</span>
+          </Button>
+        ))}
+      </div>
+
+      <span className="text-lg font-semibold max-sm:text-sm">{label}</span>
+
+      <div className="flex items-center gap-2">
+        {showCopyButton && (
+          <div className="flex items-center gap-1">
+            {onCopyDayToWeek && <CopyDayPopover onCopy={onCopyDayToWeek} />}
+
+            {onClearWeek && (
+              <Button
+                variant="destructive"
+                size="sm"
+                className="max-sm:h-8 max-sm:w-8 max-sm:p-0"
+                onClick={handleClearWeek}
+              >
+                <Trash2 className="size-4 sm:mr-1" />
+                <span className="hidden sm:inline">Clear Week</span>
+              </Button>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center gap-1">
+          <Button
+            variant="outline"
+            size="icon"
+            className="size-8"
+            onClick={() => onNavigate("PREV")}
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="size-8"
+            onClick={() => onNavigate("NEXT")}
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
