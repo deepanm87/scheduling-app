@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const stateDate = JSON.parse(Buffer.from(state, "base64").toString())
+    const stateData = JSON.parse(Buffer.from(state, "base64").toString())
 
     if (Date.now() - stateData.timestamp > 5 * 60 * 1000) {
       return NextResponse.redirect(
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
     }
 
     const existingAccount = user.connectedAccounts?.find(
-      acc => acc.accountId === googleUser.id
+      (acc: { accountId?: string }) => acc.accountId === googleUser.id
     )
 
     if (existingAccount) {

@@ -8,7 +8,7 @@ import type { TimeBlock } from "../types"
 
 interface CustomToolbarProps {
   onCopyDayToWeek?: (dayIndex: number, includeWeekends: boolean) => void
-  onClearkWeek?: () => void
+  onClearWeek?: () => void
   showCopyButton?: boolean
 }
 

@@ -64,7 +64,7 @@ export default async function MeetingTypeBookingPage({
   const availability = host.availability ?? []
   const allBookingsRaw = bookings ?? []
 
-  const hostAccount = host.connectedAccounts?.find(a => a.isDefault) ?? null
+  const hostAccount = host.connectedAccounts?.find((a: { isDefault?: boolean }) => a.isDefault) ?? null
   const activeBookingIds = await getActiveBookingIds(
     hostAccount
       ? {
@@ -75,18 +75,18 @@ export default async function MeetingTypeBookingPage({
         expiryDate: hostAccount.expiryDate
       }
       : null,
-    allBookingsRaw.map(b => ({
+    allBookingsRaw.map((b: { _id: string; googleEventId?: string | null; guestEmail?: string | null }) => ({
       id: b._id,
       googleEventId: b.googleEventId,
       guestEmail: b.guestEmail
     }))
   )
 
-  const allBookings = allBookingsRaw.filter(b => activeBookingIds.has(b._id))
+  const allBookings = allBookingsRaw.filter((b: { _id: string }) => activeBookingIds.has(b._id))
 
   const today = startOfDay(new Date())
 
-  const latestEndDate = availability.reduce<Date>((latest, slot) => {
+  const latestEndDate = availability.reduce((latest: Date, slot: { endDateTime: string }) => {
     const slotEnd = parseISO(slot.endDateTime)
     return slotEnd > latest ? slotEnd : latest
   }, today)

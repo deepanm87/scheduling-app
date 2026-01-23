@@ -95,7 +95,7 @@ export default async function SettingsPage({
               </p>
             </div>
           </div>
-          <span className="text-muted-foreground">&arr;</span>
+          <span className="text-muted-foreground">&rarr;</span>
         </Link>
       </div>
     </main>

@@ -12,7 +12,7 @@ const getWeekStartDay = (): 0 | 1 => {
 
 export const localizer = dateFnsLocalizer({
   format,
-  parse,
+  parse: (value: string, formatStr: string) => parse(value, formatStr, new Date()),
   startOfWeek: () => 
     startOfWeek(new Date(), { weekStartsOn: getWeekStartDay() }),
   getDay,

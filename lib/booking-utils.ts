@@ -8,10 +8,7 @@ import type {
   HostUpcomingBooking
 } from "@/sanity/queries/bookings"
 
-export type BookingWithGoogleEvent = Pick<
-  HostBooking | HostUpcomingBooking,
-  "_id" | "googleEventId" | "guestEmail"
->
+export type BookingWithGoogleEvent = HostBooking | HostUpcomingBooking
 
 export type ProcessedBooking<T extends BookingWithGoogleEvent> = T & {
   guestStatus?: AttendeeStatus
@@ -27,11 +24,13 @@ export async function processBookingsWithStatuses<
 }> {
   const statuses = await getBookingAttendeeStatuses(
     bookings
-      .filter(b => b.googleEventId)
+      .filter((b): b is T & { googleEventId: string; guestEmail: string } => 
+        !!b.googleEventId && !!b.guestEmail
+      )
       .map(b => ({
         id: b._id,
-        googleEventId: b.googleEventId,
-        guestEmail: b.guestEmail
+        googleEventId: b.googleEventId!,
+        guestEmail: b.guestEmail!
       }))
   )
 

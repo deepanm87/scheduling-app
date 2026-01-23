@@ -54,7 +54,7 @@ export async function getAvailableSlots(
   const dayStart = startOfDay(date)
   const dayEnd = endOfDay(date)
 
-  const availabilityForDate = (host.availability ?? []).filter(slot => {
+  const availabilityForDate = (host.availability ?? []).filter((slot: { startDateTime: string; endDateTime: string }) => {
     const slotStart = parseISO(slot.startDateTime)
     const slotEnd = parseISO(slot.endDateTime)
 
@@ -75,19 +75,20 @@ export async function getAvailableSlots(
     endDate: dayEnd.toISOString()
   })
 
-  const defaultAccount = host.connectedAccounts?.find(a => a.isDefault())
+  const defaultAccount = host.connectedAccounts?.find((a: { isDefault?: boolean }) => a.isDefault)
   const declinedBookingIds = new Set<string>()
 
   if (defaultAccount?.accessToken && defaultAccount?.refreshToken) {
     await Promise.all(
       existingBookings
-        .filter(b => b.googleEventId && b.guestEmail)
-        .map(async booking => {
+        .filter((b: { googleEventId?: string | null; guestEmail?: string | null }) => b.googleEventId && b.guestEmail)
+        .map(async (booking: { _id: string; googleEventId?: string | null; guestEmail?: string | null }) => {
           if (!booking.googleEventId) {
             return
           }
 
           try {
+            if (!booking.googleEventId || !booking.guestEmail) return
             const status = await getEventAttendeeStatus(
               defaultAccount,
               booking.googleEventId,
@@ -104,7 +105,7 @@ export async function getAvailableSlots(
   }
 
   const activeBookings = existingBookings.filter(
-    b => !declinedBookingIds.has(b._id)
+    (b: { _id: string }) => !declinedBookingIds.has(b._id)
   )
 
   const busyTimes = await getGoogleBusyTimes(
@@ -130,8 +131,8 @@ export async function getAvailableSlots(
     }
   }
 
-  const availableSlots = allSlots.filter(slot => {
-    const hasBookingConflict = activeBookings.some(booking => {
+  const availableSlots = allSlots.filter((slot: TimeSlot) => {
+    const hasBookingConflict = activeBookings.some((booking: { startTime: string; endTime: string }) => {
       const bookingStart = parseISO(booking.startTime)
       const bookingEnd = parseISO(booking.endTime)
       return slot.start < bookingEnd && slot.end > bookingStart
@@ -236,7 +237,7 @@ export async function createBooking(
     throw new Error("This time slot is no longer available")
   }
 
-  const defaultAccount = host.connectedAccounts?.find(a => a.isDefault)
+  const defaultAccount = host.connectedAccounts?.find((a: { isDefault?: boolean }) => a.isDefault)
 
   let googleEventId: string | undefined
   let meetLink: string | undefined
@@ -308,7 +309,7 @@ export async function createBooking(
 }
 
 export async function getGoogleBusyTimes(
-  connectedAccounts: HostWithTokens["connectedAcounts"],
+  connectedAccounts: HostWithTokens["connectedAccounts"],
   startDate: Date,
   endDate: Date
 ): Promise<Array<{ 
@@ -338,11 +339,11 @@ async function checkSlotAvailable(
     endDate: endTime.toISOString()
   })
 
-  const defaultAccount = host.connectedAccounts?.find(a => a.isDefault())
+  const defaultAccount = host.connectedAccounts?.find((a: { isDefault?: boolean }) => a.isDefault)
   const declinedBookingIds = new Set <string>()
 
   if (defaultAccount?.accessToken && defaultAccount?.refreshToken) {
-    const overlappingBookings = existingBookings.filter(booking => {
+    const overlappingBookings = existingBookings.filter((booking: { startTime: string; endTime: string }) => {
       const bookingStart = parseISO(booking.startTime)
       const bookingEnd = parseISO(booking.endTime)
       return startTime < bookingEnd && endTime > bookingStart
@@ -350,13 +351,14 @@ async function checkSlotAvailable(
 
     await Promise.all(
       overlappingBookings
-        .filter(b => b.googleEventId && b.guestEmail)
-        .map(async booking => {
+        .filter((b: { googleEventId?: string | null; guestEmail?: string | null }) => b.googleEventId && b.guestEmail)
+        .map(async (booking: { _id: string; googleEventId?: string | null; guestEmail?: string | null }) => {
           if (!booking.googleEventId) {
             return
           }
 
           try {
+            if (!booking.googleEventId || !booking.guestEmail) return
             const status = await getEventAttendeeStatus(
               defaultAccount,
               booking.googleEventId,
@@ -372,7 +374,7 @@ async function checkSlotAvailable(
     )
   }
 
-  return !existingBookings.some(booking => {
+  return !existingBookings.some((booking: { _id: string; startTime: string; endTime: string }) => {
     if (declinedBookingIds.has(booking._id)) {
       return false
     }

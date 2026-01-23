@@ -1,5 +1,5 @@
 import { defineQuery } from "next-sanity"
-import type { MEETING_TYPES_BY_HOST_QUERYResult } from "@/sanity.types"
+import type { MEETING_TYPES_BY_HOST_QUERYResult } from "@/sanity/types"
 
 export const MEETING_TYPES_BY_HOST_QUERY = defineQuery(`*[
   _type == "meetingType"

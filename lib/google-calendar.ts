@@ -147,7 +147,7 @@ export async function fetchCalendarEvents(
           start: new Date(event.start.dateTime),
           end: new Date(event.end.dateTime),
           title: event.summary ?? "Busy",
-          accountEmail: account.email
+          accountEmail: account.email ?? ""
         })
       }
     } catch (error) {

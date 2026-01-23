@@ -33,7 +33,7 @@ export function BookingsList({ bookings }: BookingListProps) {
   const [cancellingId, setCancellingId] = useState<string | null>(null)
 
   const activeBookings = bookings.filter(b => {
-    return isFuture(new Date(b.startTime))
+    return b.startTime && isFuture(new Date(b.startTime))
   })
 
   const handleCancel = (bookingId: string) => {
@@ -94,10 +94,13 @@ export function BookingsList({ bookings }: BookingListProps) {
       ) : (
         <div className="space-y-4">
           {activeBookings.map(booking => {
+            if (!booking.startTime || !booking.endTime) return null
             const startTime = new Date(booking.startTime)
             const endTime = new Date(booking.endTime)
             const isTodayBooking = isToday(startTime)
 
+            if (!booking.startTime || !booking.endTime) return null
+            
             return (
               <Card key={booking._id} className="overflow-hidden">
                 <CardContent className="p-0">

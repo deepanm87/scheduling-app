@@ -240,7 +240,7 @@ export function AvailabilityCalendar({
     <CalendarToolbar 
       {...props}
       showCopyButton={!isMonthView}
-      onCopyDayToWeek={(dayIndex, includeWeekends) => 
+      onCopyDayToWeek={(dayIndex: number, includeWeekends: boolean) => 
         copyDayToWeek(dayIndex, date, includeWeekends)
       }
       onClearWeek={() => clearWeek(date)}
@@ -397,13 +397,13 @@ export function AvailabilityCalendar({
         eventPropGetter={eventStyleGetter}
         selectable
         resizable={!isMonthView}
-        draggableAccessor={event => 
+        draggableAccessor={(event: CalendarEvent) => 
           !isMonthView && !isBusyBlock(event) && !isBookedBlock(event)
         }
         popup
         onSelectSlot={onSlotSelect}
         onSelectEvent={onBlockSelect}
-        onEventDrop={args => {
+        onEventDrop={(args: { event: CalendarEvent; start: Date; end: Date; isAllDay: boolean }) => {
           if (
             !isMonthView &&
             !isBusyBlock(args.event) &&
@@ -412,7 +412,7 @@ export function AvailabilityCalendar({
             handleEventDrop(adaptEventArgs(args))
           }
         }}
-        onEventResize={args => {
+        onEventResize={(args: { event: CalendarEvent; start: Date; end: Date; isAllDay: boolean }) => {
           if (
             !isMonthView &&
             !isBusyBlock(args.event) &&

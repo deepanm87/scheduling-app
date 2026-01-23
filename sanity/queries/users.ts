@@ -3,7 +3,7 @@ import type {
   USER_WITH_TOKENS_QUERYResult,
   HOST_BY_SLUG_WITH_TOKENS_QUERYResult,
   USER_CONNECTED_ACCOUNTS_DISPLAY_QUERYResult
-} from "@/sanity.types"
+} from "@/sanity/types"
 
 export type ConnectedAccountWithTokens = NonNullable<NonNullable<USER_WITH_TOKENS_QUERYResult>["connectedAccounts"]>[number]
 

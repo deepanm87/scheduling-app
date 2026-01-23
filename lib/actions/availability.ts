@@ -92,7 +92,7 @@ export async function getOrCreateBookingLink(): Promise<{
   const user = await client.fetch(USER_SLUG_QUERY, { clerkId: userId })
 
   if (!user) {
-    const newUser = await getOrCreateUser(userdId)
+    const newUser = await getOrCreateUser(userId)
     const clerkUser = await currentUser()
     const name = clerkUser?.firstName
       ? `${clerkUser.firstName} ${clerkUser.lastName || ""}`.trim()

@@ -14,6 +14,8 @@ export interface BusyBlock {
 
 import type { AttendeeStatus } from "@/lib/google-calendar"
 
+export type { AttendeeStatus }
+
 export interface BookedBlock {
   id: string
   start: Date

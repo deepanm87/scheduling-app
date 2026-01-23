@@ -42,18 +42,20 @@ export default async function AvailabilityPage() {
 
   const { activeBookings } = await processBookingsWithStatuses(bookings ?? [])
 
-  const bookedBlocks: BookedBlock[] = activeBookings.map(booking => ({
-    id: booking._id,
-    start: new Date(booking.startTime),
-    end: new Date(booking.endTime),
-    guestName: booking.guestName,
-    guestEmail: booking.guestEmail,
-    googleEventId: booking.googleEventId ?? undefined,
-    meetLink: booking.meetLink ?? undefined,
-    attendeeStatus: booking.guestStatus
-  }))
+  const bookedBlocks: BookedBlock[] = activeBookings
+    .filter(booking => booking.startTime && booking.endTime && booking.guestName && booking.guestEmail)
+    .map(booking => ({
+      id: booking._id,
+      start: new Date(booking.startTime!),
+      end: new Date(booking.endTime!),
+      guestName: booking.guestName!,
+      guestEmail: booking.guestEmail!,
+      googleEventId: booking.googleEventId ?? undefined,
+      meetLink: booking.meetLink ?? undefined,
+      attendeeStatus: booking.guestStatus
+    }))
 
-  const initialBlocks: TimeBlock[] = availability.map(slot => ({
+  const initialBlocks: TimeBlock[] = availability.map((slot: { _key: string; startDateTime: string; endDateTime: string }) => ({
     id: slot._key,
     start: new Date(slot.startDateTime),
     end: new Date(slot.endDateTime)

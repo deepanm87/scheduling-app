@@ -74,7 +74,7 @@ export async function disconnectGoogleAccount(
     throw new Error("User not found")
   }
 
-  const account = user.connectedAccounts?.find(a => a._key === accountKey)
+  const account = user.connectedAccounts?.find((a: { _key: string }) => a._key === accountKey)
   if (!account) {
     throw new Error("Account not found")
   }
@@ -85,7 +85,7 @@ export async function disconnectGoogleAccount(
 
   const wasDefault = account.isDefault
   const remainingAccounts = user.connectedAccounts?.filter(
-    a => a._key !== accountKey
+    (a: { _key: string }) => a._key !== accountKey
   )
 
   await writeClient
@@ -117,12 +117,12 @@ export async function setDefaultCalendarAccount(
     throw new Error("User not found")
   }
 
-  const account = user.connectedAccounts?.find(a => a._key === accountKey)
+  const account = user.connectedAccounts?.find((a: { _key: string }) => a._key === accountKey)
   if (!account) {
     throw new Error("Account not found")
   }
 
-  for (const acc of user.connectedAccounts ?? []) {
+  for (const acc of (user.connectedAccounts ?? []) as Array<{ _key: string; isDefault?: boolean }>) {
     if (acc._key !== accountKey && acc.isDefault) {
       await writeClient
         .patch(user._id)
@@ -222,7 +222,7 @@ export async function getBookingAttendeeStatuses(
     return {}
   }
 
-  const account = user.connectedAccounts.find(a => a.isDefault())
+  const account = user.connectedAccounts.find((a: { isDefault?: boolean }) => a.isDefault)
   if (!account?.accessToken || !account?.refreshToken) {
     return {}
   }
@@ -230,10 +230,10 @@ export async function getBookingAttendeeStatuses(
   const hostEmail = account.email
   const statuses: Record<string, BookingStatuses> = {}
 
-  const bookingsWithEvents = bookings.filter(b => b.googleEventId)
+  const bookingsWithEvents = bookings.filter((b: { googleEventId: string | null }) => b.googleEventId)
 
   await Promise.all(
-    bookingsWithEvents.map(async booking => {
+    bookingsWithEvents.map(async (booking: { id: string; googleEventId: string | null; guestEmail: string }) => {
       if (booking.googleEventId) {
         const { hostStatus, guestStatus } = await getEventAttendeeStatuses(
           account,

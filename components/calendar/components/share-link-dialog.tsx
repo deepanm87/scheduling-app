@@ -320,7 +320,7 @@ export function ShareLinkDialog() {
                       </SelectContent>
                     </Select>
                     <Button
-                      type="Button"
+                      type="button"
                       variant="outline"
                       size="icon"
                       onClick={() => setIsCreatingType(true)}
