@@ -2,6 +2,7 @@
 
 import { Suspense } from "react"
 import { InsightsSection } from "@/components/admin/insights/InsightsSection"
+import { FeedbackSection } from "@/components/admin/feedback/FeedbackSection"
 import { Spinner } from "@/components/ui/spinner"
 
 function LoadingFallback() {
@@ -19,6 +20,12 @@ export default function AdminDashboard() {
         <Suspense fallback={<LoadingFallback />}>
           <InsightsSection />
         </Suspense>
+
+        <div className="md:col-span-2 lg:col-span-2 lg:row-span-3 lg:row-start-1 lg:col-start-3">
+          <Suspense fallback={<LoadingFallback />}>
+            <FeedbackSection />
+          </Suspense>
+        </div>
       </div>
     </div>
   )

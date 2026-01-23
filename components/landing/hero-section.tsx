@@ -20,7 +20,7 @@ export function HeroSection() {
           </h1>
           <p className="mt-6 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             Horario connects to your Google Caneldar, shows your real-time availability, and lets anyone book time
-            with you instantly. No more &quot;what time works for you?quot; emails.
+            with you instantly. No more &quot;what time works for you?&quot; emails.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <SignedOut>
